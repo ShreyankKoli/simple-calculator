@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f2f2f2;
+        }
+
+        #calculator {
+            width: 300px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        input {
+            width: calc(100% - 20px);
+            margin: 10px;
+            padding: 10px;
+            font-size: 18px;
+            box-sizing: border-box;
+            border: none;
+            border-bottom: 1px solid #ccc;
+            outline: none;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+
+        div {
+            display: flex;
+        }
+
+        button {
+            flex: 1;
+            width: 48px;
+            height: 48px;
+            font-size: 18px;
+            margin: 5px;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            background-color: #4CAF50;
+            color: #fff;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+    <title>Simple Calculator</title>
+</head>
+<body>
+    <div id="calculator">
+        <input type="text" id="display" readonly>
+        <div>
+            <button onclick="appendToDisplay('7')">7</button>
+            <button onclick="appendToDisplay('8')">8</button>
+            <button onclick="appendToDisplay('9')">9</button>
+            <button onclick="clearDisplay()">C</button>
+        </div>
+        <div>
+            <button onclick="appendToDisplay('4')">4</button>
+            <button onclick="appendToDisplay('5')">5</button>
+            <button onclick="appendToDisplay('6')">6</button>
+            <button onclick="operate('/')">/</button>
+        </div>
+        <div>
+            <button onclick="appendToDisplay('1')">1</button>
+            <button onclick="appendToDisplay('2')">2</button>
+            <button onclick="appendToDisplay('3')">3</button>
+            <button onclick="operate('*')">*</button>
+        </div>
+        <div>
+            <button onclick="appendToDisplay('0')">0</button>
+            <button onclick="appendToDisplay('.')">.</button>
+            <button onclick="calculate()">=</button>
+            <button onclick="operate('-')">-</button>
+        </div>
+        <div>
+            <button onclick="operate('+')">+</button>
+            <button onclick="backspace()">←</button>
+        </div>
+    </div>
+
+    <script>
+        let displayValue = '';
+
+function appendToDisplay(value) {
+    displayValue += value;
+    document.getElementById('display').value = displayValue;
+}
+
+function clearDisplay() {
+    displayValue = '';
+    document.getElementById('display').value = displayValue;
+}
+
+function backspace() {
+    displayValue = displayValue.slice(0, -1);
+    document.getElementById('display').value = displayValue;
+}
+
+function calculate() {
+    try {
+        displayValue = eval(displayValue);
+        if (isNaN(displayValue) || !isFinite(displayValue)) {
+            throw new Error('Invalid input');
+        }
+        document.getElementById('display').value = displayValue;
+    } catch (error) {
+        document.getElementById('display').value = 'Error';
+    }
+}
+
+function operate(operator) {
+    if (displayValue !== '') {
+        displayValue += operator;
+        document.getElementById('display').value = displayValue;
+    }
+}
+
+document.addEventListener('keydown', function (event) {
+    const key = event.key;
+    if (!isNaN(key) || key === '.' || key === '+' || key === '-' || key === '*' || key === '/') {
+        appendToDisplay(key);
+    } else if (key === 'Enter') {
+        calculate();
+    } else if (key === 'Backspace') {
+        backspace();
+    }
+});
+    </script>
+</body>
+</html>
